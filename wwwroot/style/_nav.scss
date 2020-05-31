@@ -1,4 +1,20 @@
-.nav-wrapper {
-    max-width: 1000px;
-    margin: 0 auto;
+nav {
+    background-color: rgb(56, 155, 236);
+    color: white;
+    a {
+        color: white;
+        text-decoration: none;
+    }
+    margin: 0;
+    .nav-wrapper {
+        .logo {
+            font-size: 2rem;
+        }
+        padding: 1rem 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

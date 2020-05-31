@@ -2,19 +2,19 @@
 
 <h1>Markdown Table Generator</h1>
 <div class="row">
-    <label for="numRows" class="col s1">#Rows</label>
+    <label for="numRows" class="col s1">#Rows: </label>
     <input type="number" min="1" max="100" id="numRows" placeholder="Placeholder" class=" input-field col s3" @bind-value="NumRows"  />
 </div>
 <div class="row">
-    <label for="numCows" class="col s1">#Cols</label>
+    <label for="numCows" class="col s1">#Cols: </label>
     <input type="number" min="1" max="100" id="numCols" class=" input-field col s3" @bind-value="NumCols"/>
 </div>
 <div class="row">
 
-<button class="amber darken-3 btn waves-effect" @onclick="@(e => AddRow(1))">Add row</button>
-<button class="amber darken-3 btn waves-effect" @onclick="@(e => AddRow(-1))">Delete row</button>
-<button class="blue btn waves-effect" @onclick="@(e => AddCol(1))">Add col</button>
-<button class="blue btn waves-effect" @onclick="@(e => AddCol(-1))">Delete col</button>
+<button class="amber darken-3 btn waves-effect margin-small" @onclick="@(e => AddRow(1))">Add row</button>
+<button class="amber darken-3 btn waves-effect margin-small" @onclick="@(e => AddRow(-1))">Delete row</button>
+<button class="blue btn waves-effect margin-small" @onclick="@(e => AddCol(1))">Add col</button>
+<button class="blue btn waves-effect margin-small" @onclick="@(e => AddCol(-1))">Delete col</button>
 </div>
 <table class="inputTable">
     <tbody>
