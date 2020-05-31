@@ -1,0 +1,23 @@
+@inject IJSRuntime JSRuntime
+
+<div class="position-relative" style="background-color: #f5f5f5; margin-top: 2rem">
+    <div>
+        <button type="button" class="waves-effect waves-blue btn-flat" @onclick="CopyTextToClipboard">Copy</button>
+    </div>
+    <pre>
+        <code @ref="_codeElement">
+            @ChildContent
+        </code>
+    </pre>
+</div>
+
+@code {
+    private ElementReference _codeElement;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private async Task CopyTextToClipboard()
+    {
+        await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", _codeElement);
+    }
+}
