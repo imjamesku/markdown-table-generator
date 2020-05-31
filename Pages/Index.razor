@@ -93,7 +93,7 @@
     }
     private string Output { get; set; } = "";
 
-    private string[,] table { get; set; } = new string[1000, 1000];
+    private string[,] table { get; set; } = new string[maxRows, maxCols];
 
     private void handleClick()
     {
@@ -177,17 +177,11 @@
 
     private void AddRow(int addend)
     {
-        if (NumRows < 1000 && NumRows > 0)
-        {
-            NumRows += addend;
-        }
+        NumRows += addend;
     }
 
     private void AddCol(int addend)
     {
-        if (NumCols < 1000 && NumCols > 0)
-        {
-            NumCols += addend;
-        }
+        NumCols += addend;
     }
 }
