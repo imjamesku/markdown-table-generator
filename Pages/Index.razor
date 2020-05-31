@@ -1,0 +1,141 @@
+﻿@page "/"
+
+<h1>Markdown Table Generator</h1>
+<div>
+    <input type="text" @bind-value="NumRows" @bind-value:event="oninput" />
+    <input type="text" @bind-value="NumCols" @bind-value:event="oninput"/>
+</div>
+<table class="inputTable">
+    <tbody>
+        @for (int i = 0; i < NumRows; i++) {
+            <tr>
+                @for (int j = 0; j < NumCols; j++)
+                {
+                    var realI = i;
+                    var realJ = j;
+                    <td><input type="text" @bind-value="table[realI, realJ]"/></td>
+                }
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<br>
+<button @onclick="handleClick">Generate</button>
+<button @onclick="@(e => addRow(1))">add row</button>
+<button @onclick="@(e => addRow(-1))">delete row</button>
+<button @onclick="@(e => addCol(1))">add col</button>
+<button @onclick="@(e => addCol(-1))">delete col</button>
+<code class="outputTable">
+@test
+</code>
+
+
+
+@code {
+    private int NumRows { get; set; } = 5;
+    private int NumCols { get; set; } = 6;
+    private string test { get; set; } = "";
+
+    private string[,] table { get; set; } = new string[1000, 1000];
+
+    private void handleClick()
+    {
+
+        Console.WriteLine("Some content logged in Blazor App output window");
+        test = generateTable();
+    }
+
+    private string GenerateRow(string[] row, int[] maxLengths)
+    {
+        var paddedRow = new string[NumCols];
+        for (int i = 0; i < NumCols; i++)
+        {
+            int finalLength = maxLengths[i] + 2;
+            int len = 0;
+            if (row[i] != null)
+            {
+                len = row[i].Length;
+            }
+            var tailingSpaces = new String(' ', finalLength - 1 - len);
+            paddedRow[i] = " " + row[i] + tailingSpaces;
+        }
+        return "|" + String.Join("|", paddedRow) + "|\n";
+    }
+    private string GenerateSecondRow(int[] maxLengths)
+    {
+        var paddedRow = new string[NumCols];
+        for (int i = 0; i < NumCols; i++)
+        {
+            paddedRow[i] = new String(' ', maxLengths[i] + 2);
+        }
+        return "|" + String.Join("|", paddedRow) + "|\n";
+    }
+    private int[] GetMaxLengthEachCol()
+    {
+        var maxLengths = new int[NumCols];
+        for (int j = 0; j < NumCols; j++)
+        {
+            for (int i = 0; i < NumRows; i++)
+            {
+                int len = 0;
+                if (table[i, j] != null)
+                {
+                    len = table[i, j].Length;
+                }
+                maxLengths[j] = Math.Max(maxLengths[j], len);
+            }
+        }
+        return maxLengths;
+    }
+    private string generateTable()
+    {
+        if (NumRows == 0 || NumCols == 0)
+        {
+            return "";
+        }
+        var maxLengths = GetMaxLengthEachCol();
+        Array.ForEach(maxLengths, Console.WriteLine);
+
+        // First Row
+        string tableString = "";
+        tableString += GenerateRow(GetRow(table, 0), maxLengths);
+        var dashes = new string[NumCols];
+        for (int i = 0; i < NumCols; i++)
+        {
+            dashes[i] = "-";
+        }
+        // Add second Row
+        tableString += GenerateSecondRow(maxLengths);
+        // Add remaining rows
+        for (int i = 1; i < NumRows; i++)
+        {
+            tableString += GenerateRow(GetRow(table, i), maxLengths);
+        }
+        return tableString;
+    }
+
+    public T[] GetRow<T>(T[,] matrix, int rowNumber)
+    {
+        return Enumerable.Range(0, NumCols)
+                .Select(x => matrix[rowNumber, x])
+                .ToArray();
+    }
+
+    private void addRow(int addend)
+    {
+        if (NumRows < 1000 && NumRows > 0)
+        {
+            NumRows += addend;
+        }
+    }
+
+    private void addCol(int addend)
+    {
+        if (NumCols < 1000 && NumCols > 0)
+        {
+            NumCols += addend;
+        }
+    }
+}
